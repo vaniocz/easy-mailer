@@ -1,0 +1,39 @@
+{
+    "name": "vanio/easy-mailer",
+    "description": "Easy peasy e-mail sending from PHP applications.",
+    "keywords": ["e-mail", "e-mail sending"],
+    "homepage": "https://github.com/vaniocz/easy-mailer",
+    "license": "MIT",
+    "authors": [
+        {"name": "Adam Hojka"}
+    ],
+    "require": {
+        "php": "7.0.*",
+        "pelago/emogrifier": "1.1.x@dev",
+        "soundasleep/html2text": "^0.3",
+        "swiftmailer/swiftmailer": "^5.4",
+        "twig/twig": "^1.24"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5",
+        "slevomat/coding-standard": "dev-master as 1.x-dev",
+        "vanio/coding-standards": "^0.1@dev"
+    },
+    "autoload": {
+        "psr-4": {"Vanio\\EasyMailer\\": "src/"},
+        "exclude-from-classmap": ["/tests/"]
+    },
+    "autoload-dev": {
+        "psr-4": {"Vanio\\EasyMailer\\Tests\\": "tests/"}
+    },
+    "scripts": {
+        "test": "\"vendor/bin/phpunit\"",
+        "lint": "\"vendor/bin/phpcs\" --standard=vendor/vanio/coding-standards/ruleset.xml --extensions=php --encoding=utf-8 --ignore=vendor .",
+        "fix": "\"vendor/bin/phpcbf\" --standard=vendor/vanio/coding-standards/ruleset.xml --extensions=php --encoding=utf-8 --no-patch --ignore=vendor ."
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}
