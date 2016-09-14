@@ -36,13 +36,18 @@ class EasyMailer
      *
      * @param string $templatePath A path to the template file.
      * @param mixed[] $context The template context.
-     * @param EmailAddress[] $to List of recipients which will be merged with those set in the template.
-     * @param EmailAddress[] $cc List of recipients of the message copy which will be merged with those set in the template.
-     * @param EmailAddress[] $bcc List of recipients who this message will be blind-copied to which will be merged with those set in the template.
+     * @param string[] $to List of recipients which will be merged with those set in the template.
+     * @param string[] $cc List of recipients of the message copy which will be merged with those set in the template.
+     * @param string[] $bcc List of recipients who this message will be blind-copied to which will be merged with those set in the template.
      */
     public function send(string $templatePath, array $context = [], array $to = [], array $cc = [], array $bcc = [])
     {
         $message = $this->templateEngineAdapter->createMessage($templatePath, $context);
-        $this->mailerAdapter->sendMessage($message, $to, $cc, $bcc);
+        $this->mailerAdapter->sendMessage(
+            $message,
+            array_map(EmailAddress::class . '::fromString', $to),
+            array_map(EmailAddress::class . '::fromString', $cc),
+            array_map(EmailAddress::class . '::fromString', $bcc)
+        );
     }
 }

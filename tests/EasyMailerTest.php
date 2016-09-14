@@ -29,9 +29,9 @@ class EasyMailerTest extends TestCase
     function test_message_sending()
     {
         $message = $this->getMockBuilder(Message::class)->disableOriginalConstructor()->getMock();
-        $to = [new EmailAddress('to@foo.bar')];
-        $cc = [new EmailAddress('cc@foo.bar')];
-        $bcc = [new EmailAddress('bcc@foo.bar')];
+        $to = ['John Doe <to@foo.bar>'];
+        $cc = ['cc@foo.bar'];
+        $bcc = ['bcc@foo.bar'];
 
         $this->templateEngineAdapter
             ->expects($this->once())
@@ -44,6 +44,12 @@ class EasyMailerTest extends TestCase
             ->method('sendMessage')
             ->with($message, $to, $cc, $bcc);
 
-        $this->easyMailer->send('some_dir/some_template.html.twig', ['test' => 'Test'], $to, $cc, $bcc);
+        $this->easyMailer->send(
+            'some_dir/some_template.html.twig',
+            ['test' => 'Test'],
+            [EmailAddress::fromString($to[0])],
+            [EmailAddress::fromString($cc[0])],
+            [EmailAddress::fromString($bcc[0])]
+        );
     }
 }
