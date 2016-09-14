@@ -1,14 +1,14 @@
 <?php
 namespace Vanio\EasyMailer\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Vanio\EasyMailer\EasyMailer;
 use Vanio\EasyMailer\EmailAddress;
 use Vanio\EasyMailer\Mailer\MailerAdapter;
 use Vanio\EasyMailer\Message;
 use Vanio\EasyMailer\Template\TemplateEngineAdapter;
 
-class EasyMailerTest extends PHPUnit_Framework_TestCase
+class EasyMailerTest extends TestCase
 {
     /** @var TemplateEngineAdapter */
     private $templateEngineAdapter;

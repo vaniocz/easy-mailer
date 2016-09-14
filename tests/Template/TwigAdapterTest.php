@@ -1,14 +1,14 @@
 <?php
 namespace Vanio\EasyMailer\Tests\Template;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Vanio\EasyMailer\EmailAddress;
 use Vanio\EasyMailer\Message;
 use Vanio\EasyMailer\Template\TwigAdapter;
 
-class TwigAdapterTest extends PHPUnit_Framework_TestCase
+class TwigAdapterTest extends TestCase
 {
     /** @var Message */
     private $message;

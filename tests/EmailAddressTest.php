@@ -2,10 +2,10 @@
 namespace Vanio\EasyMailer\Tests;
 
 use InvalidArgumentException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Vanio\EasyMailer\EmailAddress;
 
-class EmailAddressTest extends PHPUnit_Framework_TestCase
+class EmailAddressTest extends TestCase
 {
     function test_email_address_constructor_sets_email_correctly()
     {

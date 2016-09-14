@@ -1,7 +1,7 @@
 <?php
 namespace Vanio\EasyMailer\Tests\Mailer;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Swift_Mailer;
 use Swift_Message;
 use Vanio\EasyMailer\EmailAddress;
@@ -9,7 +9,7 @@ use Vanio\EasyMailer\HtmlMessageContent;
 use Vanio\EasyMailer\Mailer\SwiftMailerAdapter;
 use Vanio\EasyMailer\Message;
 
-class SwiftMailerAdapterTests extends PHPUnit_Framework_TestCase
+class SwiftMailerAdapterTests extends TestCase
 {
     /** @var Swift_Mailer */
     private $swift;

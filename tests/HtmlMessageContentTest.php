@@ -1,10 +1,10 @@
 <?php
 namespace Vanio\EasyMailer\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Vanio\EasyMailer\HtmlMessageContent;
 
-class HtmlMessageContentTest extends PHPUnit_Framework_TestCase
+class HtmlMessageContentTest extends TestCase
 {
     function test_message_has_correct_mime_type()
     {

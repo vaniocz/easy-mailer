@@ -1,11 +1,11 @@
 <?php
 namespace Vanio\EasyMailer\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Vanio\EasyMailer\EmailAddress;
 use Vanio\EasyMailer\EmailAddresses;
 
-class EmailAddressesTest extends PHPUnit_Framework_TestCase
+class EmailAddressesTest extends TestCase
 {
     function test_email_address_list_parsing()
     {
