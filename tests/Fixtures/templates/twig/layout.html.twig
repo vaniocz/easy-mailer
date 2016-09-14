@@ -1,0 +1,16 @@
+{% block sender %}Vanio EasyMailer <info@vanio.cz>{% endblock %}
+{% block from %}Vanio EasyMailer <info@vanio.cz>, foo@bar.baz{% endblock %}
+
+{% block content_type %}text/html{% endblock %}
+
+{% block content %}<!DOCTYPE html>
+    <html lang="{{ lang }}">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>{{ block('title') }}</title>
+        </head>
+        <body>{% block body %}{% endblock %}</body>
+    </html>
+{% endblock %}
+{% block text_content %}C'mon, don't tell me your client can't display HTML!{% endblock %}
