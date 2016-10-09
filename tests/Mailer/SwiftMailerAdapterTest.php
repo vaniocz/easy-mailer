@@ -24,16 +24,21 @@ class SwiftMailerAdapterTests extends TestCase
     {
         $this->swift = $this->getMockBuilder(Swift_Mailer::class)->disableOriginalConstructor()->getMock();
         $this->adapter = new SwiftMailerAdapter($this->swift);
+
+        $image = (new HtmlMessageContent(''))->embed(__DIR__ . '/../Fixtures/attachments/image.png');
         $this->message = new Message(
             'Test Title',
             'Test Subject',
-            new HtmlMessageContent('<h1>Dear sirs, ...</h1>'),
+            new HtmlMessageContent(sprintf('<h1>Dear sirs, ...</h1><img src="%s" />', $image)),
             [new EmailAddress('john@doe.foo', 'John Doe')],
             [new EmailAddress('jane@doe.foo', 'Jane Doe')],
             [new EmailAddress('foo@bar.baz', 'Foo Bar')],
             new EmailAddress('info@vanio.cz', 'Vanio Info'),
             [new EmailAddress('info@vanio.cz', 'Vanio Info'), new EmailAddress('foo@bar.baz')]
         );
+
+        $this->message->content()->attach(__DIR__ . '/../Fixtures/attachments/file.txt');
+        $this->message->content()->embed(__DIR__ . '/../Fixtures/attachments/image.png');
     }
 
     function test_message_sending()
@@ -43,8 +48,11 @@ class SwiftMailerAdapterTests extends TestCase
             ->method('send')
             ->will($this->returnCallback(function (Swift_Message $swiftMessage) {
                 $this->assertSame($this->message->subject(), $swiftMessage->getSubject());
-                $this->assertSame((string) $this->message->content(), $swiftMessage->getBody());
-                $this->assertSame($this->message->content()->asPlainText(), $swiftMessage->getChildren()[0]->getBody());
+                $this->assertContains('<h1>Dear sirs, ...</h1><img src="', $swiftMessage->getBody());
+                $this->assertSame($this->message->content()->asPlainText(), $swiftMessage->getChildren()[2]->getBody());
+                $this->assertSame('#file.txt', trim($swiftMessage->getChildren()[0]->getBody()));
+                $this->assertSame('', $swiftMessage->getChildren()[1]->getBody());
+                $this->assertContains($swiftMessage->getChildren()[1]->getId(), $swiftMessage->getBody());
                 $this->assertSame($this->message->to()[0]->email(), key($swiftMessage->getTo()));
                 $this->assertSame($this->message->to()[0]->name(), current($swiftMessage->getTo()));
                 $this->assertSame($this->message->cc()[0]->email(), key($swiftMessage->getCc()));

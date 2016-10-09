@@ -7,7 +7,7 @@ use Pelago\Emogrifier;
 /**
  * Represents an HTML content.
  */
-class HtmlMessageContent implements MessageContent
+class HtmlMessageContent extends StandardMessageContent
 {
     /**
      * HTML content.
@@ -29,10 +29,21 @@ class HtmlMessageContent implements MessageContent
      * @param string $html HTML content.
      * @param string|null $text Plain text version of the HTML content.
      */
-    public function __construct(string $html, string $text = null)
+    public function __construct(string $html = '', string $text = null)
     {
-        $this->html = $html;
-        $this->text = $text;
+        $this->modify($html, $text);
+    }
+
+    /**
+     * Modify this content.
+     *
+     * @param string $content Content data.
+     * @param string|null $plainText Plain text version of this content.
+     */
+    public function modify(string $content, string $plainText = null)
+    {
+        $this->html = $content;
+        $this->text = $plainText;
     }
 
     /**

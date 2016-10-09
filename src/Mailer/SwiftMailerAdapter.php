@@ -1,6 +1,7 @@
 <?php
 namespace Vanio\EasyMailer\Mailer;
 
+use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
 use Vanio\EasyMailer\EmailAddress;
@@ -49,11 +50,9 @@ class SwiftMailerAdapter implements MailerAdapter
      */
     private function adaptMessage(Message $message, array $to, array $cc, array $bcc): Swift_Message
     {
-        $swiftMessage = new Swift_Message(
-            $message->subject(),
-            (string) $message->content(),
-            $message->content()->mimeType()
-        );
+        $swiftMessage = new Swift_Message($message->subject(), null, $message->content()->mimeType());
+        $cids = $this->moveAttachments($message, $swiftMessage);
+        $swiftMessage->setBody(str_replace(array_keys($cids), $cids, $message->content()));
 
         if ($message->content()->asPlainText()) {
             $swiftMessage->addPart($message->content()->asPlainText(), 'text/plain');
@@ -87,5 +86,26 @@ class SwiftMailerAdapter implements MailerAdapter
         }
 
         return $adapted;
+    }
+
+    /**
+     * Move attachments from the given message to the given Swift message.
+     *
+     * @param Message $from Source message.
+     * @param Swift_Message $to Destination message.
+     *
+     * @return string[]
+     */
+    private function moveAttachments(Message $from, Swift_Message $to): array
+    {
+        foreach ($from->content()->attachments() as $path) {
+            $to->attach(Swift_Attachment::fromPath($path));
+        }
+        $cids = [];
+        foreach ($from->content()->embeddedAttachments() as $id => $path) {
+            $cids[$id] = $to->embed(Swift_Attachment::fromPath($path));
+        }
+
+        return $cids;
     }
 }

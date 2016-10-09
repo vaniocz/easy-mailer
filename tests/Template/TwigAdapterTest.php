@@ -102,4 +102,17 @@ class TwigAdapterTest extends TestCase
 
         $this->assertContains('<html lang="cs">', (string) $message->content());
     }
+
+    function test_file_can_be_embedded()
+    {
+        $this->assertSame('/some/image.png', current($this->message->content()->embeddedAttachments()));
+    }
+
+    function test_files_can_be_attached()
+    {
+        $this->assertSame(
+            ['/some/file1.txt', '/some/file2.txt'],
+            array_values($this->message->content()->attachments())
+        );
+    }
 }

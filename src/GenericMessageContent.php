@@ -1,7 +1,7 @@
 <?php
 namespace Vanio\EasyMailer;
 
-class GenericMessageContent implements MessageContent
+class GenericMessageContent extends StandardMessageContent
 {
     /**
      * MIME type of this content.
@@ -29,11 +29,22 @@ class GenericMessageContent implements MessageContent
      * @param string $content This content.
      * @param string $plainText Plain text version of the HTML content.
      */
-    public function __construct(string $mimeType, string $content, string $plainText = '')
+    public function __construct(string $mimeType, string $content = '', string $plainText = '')
     {
         $this->mimeType = $mimeType;
+        $this->modify($content, $plainText);
+    }
+
+    /**
+     * Modify this content.
+     *
+     * @param string $content Content data.
+     * @param string|null $plainText Plain text version of this content.
+     */
+    public function modify(string $content, string $plainText = null)
+    {
         $this->content = $content;
-        $this->plainText = $plainText;
+        $this->plainText = (string) $plainText;
     }
 
     /**
