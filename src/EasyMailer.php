@@ -45,9 +45,9 @@ class EasyMailer
         $message = $this->templateEngineAdapter->createMessage($templatePath, $context);
         $this->mailerAdapter->sendMessage(
             $message,
-            array_map(EmailAddress::class . '::fromString', $to),
-            array_map(EmailAddress::class . '::fromString', $cc),
-            array_map(EmailAddress::class . '::fromString', $bcc)
+            array_map([EmailAddress::class, 'fromString'], $to),
+            array_map([EmailAddress::class, 'fromString'], $cc),
+            array_map([EmailAddress::class, 'fromString'], $bcc)
         );
     }
 }
