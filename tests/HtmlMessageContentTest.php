@@ -15,7 +15,7 @@ class HtmlMessageContentTest extends TestCase
     {
         $this->assertSame('Test', (new HtmlMessageContent('', 'Test'))->asPlainText());
         $this->assertSame(
-            "Hello, world!\n\nThis is a test message.",
+            "Hello, world!\n\nThis is a test message.\n",
             (new HtmlMessageContent('<p>Hello, world!</p><p>This is a test message.</p>'))->asPlainText()
         );
     }

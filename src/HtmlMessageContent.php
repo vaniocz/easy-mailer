@@ -63,7 +63,7 @@ class HtmlMessageContent extends StandardMessageContent
      */
     public function asPlainText(): string
     {
-        return $this->text ?? $this->text = Html2Text::convert($this->html);
+        return $this->text ?? $this->text = (new Html2Text($this->html))->getText();
     }
 
     /**
