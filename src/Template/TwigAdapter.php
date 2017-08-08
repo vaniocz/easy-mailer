@@ -46,14 +46,14 @@ class TwigAdapter implements TemplateEngineAdapter
         $context = $this->twig->mergeGlobals($context);
 
         return new Message(
-            $template->renderBlock('title', $context),
-            $template->renderBlock('subject', $context),
+            $this->renderBlock($template, 'title', $context),
+            $this->renderBlock($template, 'subject', $context),
             $this->createMessageContent($template, $context),
-            EmailAddresses::fromString($template->renderBlock('to', $context)),
-            EmailAddresses::fromString($template->renderBlock('cc', $context)),
-            EmailAddresses::fromString($template->renderBlock('bcc', $context)),
-            EmailAddress::fromString($template->renderBlock('sender', $context)),
-            EmailAddresses::fromString($template->renderBlock('from', $context))
+            EmailAddresses::fromString($this->renderBlock($template, 'to', $context)),
+            EmailAddresses::fromString($this->renderBlock($template, 'cc', $context)),
+            EmailAddresses::fromString($this->renderBlock($template, 'bcc', $context)),
+            EmailAddress::fromString($this->renderBlock($template, 'sender', $context)),
+            EmailAddresses::fromString($this->renderBlock($template, 'from', $context))
         );
     }
 
@@ -67,22 +67,37 @@ class TwigAdapter implements TemplateEngineAdapter
      */
     protected function createMessageContent(Twig_Template $template, array $context): MessageContent
     {
-        $mimeType = $template->renderBlock('content_type', $context);
+        $mimeType = $this->renderBlock($template, 'content_type', $context);
         $content = $mimeType === 'text/html'
             ? new HtmlMessageContent
             : new GenericMessageContent($mimeType);
 
         $context['_content'] = $content;
         $content->modify(
-            $template->renderBlock('content', $context),
-            $template->renderBlock('text_content', $context) ?: null
+            $this->renderBlock($template, 'content', $context),
+            $this->renderBlock($template, 'text_content', $context) ?: null
         );
 
-        $attachments = array_filter(preg_split('/\s*[,;]\s*/', trim($template->renderBlock('attachments', $context))));
+        $attachments = array_filter(preg_split('/\s*[,;]\s*/', trim($this->renderBlock($template, 'attachments', $context))));
         foreach ($attachments as $path) {
             $content->attach($path);
         }
 
         return $content;
+    }
+
+    private function renderBlock(\Twig_Template $template, string $block, array $context): string
+    {
+        $obLevel = ob_get_level();
+
+        try {
+            return $template->renderBlock($block, $context);
+        } catch (\Twig_Error_Runtime $e) {
+            while (ob_get_level() > $obLevel) {
+                ob_end_clean();
+            }
+
+            return '';
+        }
     }
 }

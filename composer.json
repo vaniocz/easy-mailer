@@ -8,16 +8,15 @@
         {"name": "Adam Hojka"}
     ],
     "require": {
-        "php": "7.0.*",
+        "php": "^7.0",
         "pelago/emogrifier": "1.1.x@dev",
         "html2text/html2text": "^4.0",
         "swiftmailer/swiftmailer": "^5.4",
-        "twig/twig": "^1.24"
+        "twig/twig": "^1.24|^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.5",
-        "slevomat/coding-standard": "dev-master as 1.x-dev",
-        "vanio/coding-standards": "^0.1@dev"
+        "vanio/coding-standards": "^0.1"
     },
     "autoload": {
         "psr-4": {"Vanio\\EasyMailer\\": "src/"},
@@ -28,9 +27,11 @@
     },
     "scripts": {
         "test": "\"vendor/bin/phpunit\"",
-        "lint": "\"vendor/bin/phpcs\" --standard=vendor/vanio/coding-standards/ruleset.xml --extensions=php --encoding=utf-8 --ignore=vendor .",
-        "fix": "\"vendor/bin/phpcbf\" --standard=vendor/vanio/coding-standards/ruleset.xml --extensions=php --encoding=utf-8 --no-patch --ignore=vendor ."
+        "lint": "\"vendor/bin/phpcs\" --standard=ruleset.xml --extensions=php --encoding=utf-8 --ignore=vendor .",
+        "fix": "\"vendor/bin/phpcbf\" --standard=ruleset.xml --extensions=php --encoding=utf-8 --no-patch --ignore=vendor ."
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "branch-alias": {
             "dev-master": "0.1.x-dev"
