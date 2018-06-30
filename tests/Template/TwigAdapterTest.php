@@ -10,13 +10,16 @@ use Vanio\EasyMailer\Template\TwigAdapter;
 
 class TwigAdapterTest extends TestCase
 {
+    /** @var Twig_Environment */
+    private $twig;
+
     /** @var Message */
     private $message;
 
     protected function setUp()
     {
-        $twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . '/../Fixtures/templates/twig'));
-        $this->message = (new TwigAdapter($twig))->createMessage('testMessage.html.twig', ['lang' => 'en']);
+        $this->twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . '/../Fixtures/templates/twig'));
+        $this->message = (new TwigAdapter($this->twig))->createMessage('testMessage.html.twig', ['lang' => 'en']);
     }
 
     function test_message_has_correct_title()
@@ -89,16 +92,14 @@ class TwigAdapterTest extends TestCase
 
     function test_non_html_content_has_correct_mime_type()
     {
-        $twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . '/../Fixtures/templates/twig'));
-        $message = (new TwigAdapter($twig))->createMessage('nonHtmlTestMessage.txt.twig', []);
+        $message = (new TwigAdapter($this->twig))->createMessage('nonHtmlTestMessage.txt.twig', []);
 
         $this->assertSame('text/plain', $message->content()->mimeType());
     }
 
     function test_context_passing()
     {
-        $twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . '/../Fixtures/templates/twig'));
-        $message = (new TwigAdapter($twig))->createMessage('testMessage.html.twig', ['lang' => 'cs']);
+        $message = (new TwigAdapter($this->twig))->createMessage('testMessage.html.twig', ['lang' => 'cs']);
 
         $this->assertContains('<html lang="cs">', (string) $message->content());
     }

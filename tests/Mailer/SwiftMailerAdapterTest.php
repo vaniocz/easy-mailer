@@ -9,7 +9,7 @@ use Vanio\EasyMailer\HtmlMessageContent;
 use Vanio\EasyMailer\Mailer\SwiftMailerAdapter;
 use Vanio\EasyMailer\Message;
 
-class SwiftMailerAdapterTests extends TestCase
+class SwiftMailerAdapterTest extends TestCase
 {
     /** @var Swift_Mailer */
     private $swift;

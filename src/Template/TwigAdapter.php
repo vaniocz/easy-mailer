@@ -1,6 +1,7 @@
 <?php
 namespace Vanio\EasyMailer\Template;
 
+use SplObjectStorage;
 use Twig_Environment;
 use Twig_SimpleFilter;
 use Twig_Template;
@@ -27,9 +28,20 @@ class TwigAdapter implements TemplateEngineAdapter
     public function __construct(Twig_Environment $twig)
     {
         $this->twig = $twig;
+        static $adaptedTwigs;
+
+        if (!$adaptedTwigs) {
+            $adaptedTwigs = new SplObjectStorage;
+        }
+
+        if (isset($adaptedTwigs[$twig])) {
+            return;
+        }
+
         $this->twig->addFilter(new Twig_SimpleFilter('embed', function (array $context, string $path) {
             return $context['_content']->embed($path);
         }, ['needs_context' => true]));
+        $adaptedTwigs[$twig] = true;
     }
 
     /**
