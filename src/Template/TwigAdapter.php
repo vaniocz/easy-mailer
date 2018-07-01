@@ -61,11 +61,11 @@ class TwigAdapter implements TemplateEngineAdapter
             $this->renderBlock($template, 'title', $context),
             $this->renderBlock($template, 'subject', $context),
             $this->createMessageContent($template, $context),
-            EmailAddresses::fromString($this->renderBlock($template, 'to', $context)),
-            EmailAddresses::fromString($this->renderBlock($template, 'cc', $context)),
-            EmailAddresses::fromString($this->renderBlock($template, 'bcc', $context)),
-            EmailAddress::fromString($this->renderBlock($template, 'sender', $context)),
-            EmailAddresses::fromString($this->renderBlock($template, 'from', $context))
+            EmailAddresses::fromString(trim($this->renderBlock($template, 'to', $context))),
+            EmailAddresses::fromString(trim($this->renderBlock($template, 'cc', $context))),
+            EmailAddresses::fromString(trim($this->renderBlock($template, 'bcc', $context))),
+            EmailAddress::fromString(trim($this->renderBlock($template, 'sender', $context))),
+            EmailAddresses::fromString(trim($this->renderBlock($template, 'from', $context)))
         );
     }
 
