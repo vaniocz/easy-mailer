@@ -3,7 +3,6 @@ namespace Vanio\EasyMailer\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Vanio\EasyMailer\EasyMailer;
-use Vanio\EasyMailer\EmailAddress;
 use Vanio\EasyMailer\Mailer\MailerAdapter;
 use Vanio\EasyMailer\Message;
 use Vanio\EasyMailer\Template\TemplateEngineAdapter;
@@ -44,12 +43,27 @@ class EasyMailerTest extends TestCase
             ->method('sendMessage')
             ->with($message, $to, $cc, $bcc);
 
-        $this->easyMailer->send(
-            'some_dir/some_template.html.twig',
-            ['test' => 'Test'],
-            [EmailAddress::fromString($to[0])],
-            [EmailAddress::fromString($cc[0])],
-            [EmailAddress::fromString($bcc[0])]
-        );
+        $this->easyMailer->send('some_dir/some_template.html.twig', ['test' => 'Test'], [$to[0]], [$cc[0]], [$bcc[0]]);
+    }
+
+    function test_disabling_delivery()
+    {
+        $this->mailerAdapter
+            ->expects($this->never())
+            ->method('sendMessage');
+
+        $this->easyMailer->disableDelivery();
+        $this->easyMailer->send('some_dir/some_template.html.twig', [], ['John Doe <to@foo.bar>']);
+    }
+
+    function test_enabling_delivery()
+    {
+        $this->mailerAdapter
+            ->expects($this->once())
+            ->method('sendMessage');
+
+        $this->easyMailer->disableDelivery();
+        $this->easyMailer->enableDelivery();
+        $this->easyMailer->send('some_dir/some_template.html.twig', [], ['John Doe <to@foo.bar>']);
     }
 }

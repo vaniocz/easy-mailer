@@ -20,6 +20,11 @@ class EasyMailer
     private $mailerAdapter;
 
     /**
+     * @var bool
+     */
+    private $isDeliveryEnabled = true;
+
+    /**
      * Set necessary adapters.
      *
      * @param TemplateEngineAdapter $templateEngineAdapter Template engine adapter.
@@ -42,6 +47,10 @@ class EasyMailer
      */
     public function send(string $templatePath, array $context = [], array $to = [], array $cc = [], array $bcc = [])
     {
+        if (!$this->isDeliveryEnabled) {
+            return;
+        }
+
         $message = $this->templateEngineAdapter->createMessage($templatePath, $context);
         $this->mailerAdapter->sendMessage(
             $message,
@@ -49,5 +58,21 @@ class EasyMailer
             array_map([EmailAddress::class, 'fromString'], $cc),
             array_map([EmailAddress::class, 'fromString'], $bcc)
         );
+    }
+
+    /**
+     * Enable delivery of e-mails
+     */
+    public function enableDelivery()
+    {
+        $this->isDeliveryEnabled = true;
+    }
+
+    /**
+     * Disable delivery of e-mails
+     */
+    public function disableDelivery()
+    {
+        $this->isDeliveryEnabled = false;
     }
 }
