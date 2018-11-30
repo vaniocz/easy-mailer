@@ -88,6 +88,10 @@ class TwigAdapter implements TemplateEngineAdapter
 
     private function renderBlock(\Twig_Template $template, string $block, array $context): string
     {
+        if (!$template->hasBlock($block, $context)) {
+            return '';
+        }
+
         $obLevel = ob_get_level();
 
         try {
@@ -97,7 +101,7 @@ class TwigAdapter implements TemplateEngineAdapter
                 ob_end_clean();
             }
 
-            return '';
+            throw $e;
         }
     }
 }

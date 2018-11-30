@@ -116,4 +116,10 @@ class TwigAdapterTest extends TestCase
             array_values($this->message->content()->attachments())
         );
     }
+
+    function test_twig_runtime_exceptions_are_not_swallowed()
+    {
+        $this->expectException(\Twig_Error_Runtime::class);
+        (new TwigAdapter($this->twig))->createMessage('invalidMessage.twig', []);
+    }
 }
