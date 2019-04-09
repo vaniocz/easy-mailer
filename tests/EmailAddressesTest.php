@@ -35,8 +35,8 @@ class EmailAddressesTest extends TestCase
     {
         $this->assertEquals([
             new EmailAddress('john@doe.com', '"Doe, John"'),
-            new EmailAddress('home.simpson@fox.com'),
-            new EmailAddress('foo@bar.baz', '"Foo; Bar"'),
-        ], EmailAddresses::fromString('"Doe, John" <john@doe.com>, home.simpson@fox.com; "Foo; Bar" <foo@bar.baz>'));
+            new EmailAddress('home.simps""on@fox.com'),
+            new EmailAddress('foo@bar.baz', '"\"Foo\"; Bar"'),
+        ], EmailAddresses::fromString('"Doe, John" <john@doe.com>, home.simps""on@fox.com; "\"Foo\"; Bar" <foo@bar.baz>'));
     }
 }
