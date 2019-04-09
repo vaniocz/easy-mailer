@@ -31,12 +31,12 @@ class EmailAddressesTest extends TestCase
         $this->assertEquals($expected, EmailAddresses::fromString('John Doe <john@doe.com>;'));
     }
 
-    function test_email_address_list_with_separator_in_name_parsing()
+    function test_email_address_list_with_separator_in_quoted_name_parsing()
     {
         $this->assertEquals([
-            new EmailAddress('john@doe.com', 'Doe, John'),
+            new EmailAddress('john@doe.com', '"Doe, John"'),
             new EmailAddress('home.simpson@fox.com'),
-            new EmailAddress('foo@bar.baz', 'Foo; Bar'),
-        ], EmailAddresses::fromString('Doe, John <john@doe.com>, home.simpson@fox.com; Foo; Bar <foo@bar.baz>'));
+            new EmailAddress('foo@bar.baz', '"Foo; Bar"'),
+        ], EmailAddresses::fromString('"Doe, John" <john@doe.com>, home.simpson@fox.com; "Foo; Bar" <foo@bar.baz>'));
     }
 }
