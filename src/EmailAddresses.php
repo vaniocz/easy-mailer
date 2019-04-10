@@ -14,7 +14,7 @@ class EmailAddresses
     {
         return array_map(
             EmailAddress::class . '::fromString',
-            array_filter(preg_split('/\s*[,;]\s*(?=(?:((\\\"|[^"])*[^\\\"])?"((\\\"|[^"])*[^\\\"])?")*(\\\"|[^"])*$)/', $emailAddresses))
+            array_filter(preg_split('/\r\n|\n|\r/', $emailAddresses))
         );
     }
 }
