@@ -117,6 +117,12 @@ class TwigAdapterTest extends TestCase
         );
     }
 
+    function test_emogrifying_message()
+    {
+        $message = (new TwigAdapter($this->twig))->createMessage('emogrifiedTestMessage.html.twig', []);
+        $this->assertContains('<p style="color: blue;">Test.</p>', (string) $message->content());
+    }
+
     function test_twig_runtime_exceptions_are_not_swallowed()
     {
         $this->expectException(\Twig_Error_Runtime::class);

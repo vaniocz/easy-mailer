@@ -27,8 +27,8 @@ class TwigAdapter implements TemplateEngineAdapter
     {
         $this->twig = $twig;
 
-        if (!$this->twig->hasExtension(TwigEmbedExtension::class)) {
-            $this->twig->addExtension(new TwigEmbedExtension);
+        if (!$this->twig->hasExtension(TwigExtension::class)) {
+            $this->twig->addExtension(new TwigExtension);
         }
     }
 
@@ -86,7 +86,7 @@ class TwigAdapter implements TemplateEngineAdapter
         return $content;
     }
 
-    private function renderBlock(\Twig_Template $template, string $block, array $context): string
+    private function renderBlock(Twig_Template $template, string $block, array $context): string
     {
         if (!$template->hasBlock($block, $context)) {
             return '';
