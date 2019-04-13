@@ -34,7 +34,7 @@ class EmailAddressesTest extends TestCase
     function test_email_address_list_with_leading_and_trailing_whitespace_parsing()
     {
         $expected = [new EmailAddress('john@doe.com', 'John Doe')];
-        $this->assertEquals($expected, EmailAddresses::fromString(" John Doe <john@doe.com> "));
+        $this->assertEquals($expected, EmailAddresses::fromString(' John Doe <john@doe.com> '));
     }
 
     function test_email_address_list_with_multiple_newlines_parsing()
