@@ -28,8 +28,12 @@ class HtmlMessageContentTest extends TestCase
     function test_message_html_emogrifying()
     {
         $html = '<style>* { color: red; } p { color: blue; }</style><div><p>Test.</p></div>';
-        $emogrified = (new HtmlMessageContent($html))->emogrify();
+        $messageContent = new HtmlMessageContent($html);
+        $messageContent->enableEmogrifier();
 
-        $this->assertContains('<div style="color: red;"><p style="color: blue;">Test.</p></div>', $emogrified);
+        $this->assertContains(
+            '<div style="color: red;"><p style="color: blue;">Test.</p></div>',
+            (string) $messageContent
+        );
     }
 }

@@ -24,6 +24,13 @@ class HtmlMessageContent extends StandardMessageContent
     private $text;
 
     /**
+     * Whether to run emogrifier over HTML content.
+     *
+     * @var bool
+     */
+    private $shouldEmogrify;
+
+    /**
      * Set the given HTML content.
      *
      * @param string $html HTML content.
@@ -68,15 +75,10 @@ class HtmlMessageContent extends StandardMessageContent
 
     /**
      * Get emogrified HTML content.
-     *
-     * @return string Emogrified HTML content.
      */
-    public function emogrify(): string
+    public function enableEmogrifier()
     {
-        $emogrifier = new Emogrifier($this->html);
-        $emogrifier->disableInvisibleNodeRemoval();
-
-        return $emogrifier->emogrify();
+        $this->shouldEmogrify = true;
     }
 
     /**
@@ -86,6 +88,13 @@ class HtmlMessageContent extends StandardMessageContent
      */
     public function __toString(): string
     {
+        if ($this->shouldEmogrify) {
+            $emogrifier = new Emogrifier($this->html);
+            $emogrifier->disableInvisibleNodeRemoval();
+
+            return $emogrifier->emogrify();
+        }
+
         return $this->html;
     }
 }
