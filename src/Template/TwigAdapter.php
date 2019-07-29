@@ -78,11 +78,6 @@ class TwigAdapter implements TemplateEngineAdapter
             $this->renderBlock($template, 'text_content', $context) ?: null
         );
 
-        $attachments = array_filter(preg_split('/\s*[,;]\s*/', trim($this->renderBlock($template, 'attachments', $context))));
-        foreach ($attachments as $path) {
-            $content->attach($path);
-        }
-
         return $content;
     }
 

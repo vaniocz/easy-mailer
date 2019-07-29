@@ -98,12 +98,16 @@ class SwiftMailerAdapter implements MailerAdapter
      */
     private function moveAttachments(Message $from, Swift_Message $to): array
     {
-        foreach ($from->content()->attachments() as $path) {
-            $to->attach(Swift_Attachment::fromPath($path));
+        foreach ($from->content()->attachments() as $attachment) {
+            $swiftAttachment = Swift_Attachment::fromPath($attachment->path())
+                ->setFilename($attachment->filename());
+            $to->attach($swiftAttachment);
         }
         $cids = [];
-        foreach ($from->content()->embeddedAttachments() as $id => $path) {
-            $cids[$id] = $to->embed(Swift_Attachment::fromPath($path));
+        foreach ($from->content()->embeddedAttachments() as $id => $attachment) {
+            $swiftAttachment = Swift_Attachment::fromPath($attachment->path())
+                ->setFilename($attachment->filename());
+            $cids[$id] = $to->embed($swiftAttachment);
         }
 
         return $cids;

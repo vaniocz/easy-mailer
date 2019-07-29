@@ -38,30 +38,32 @@ interface MessageContent
     /**
      * Attach the given file to this message.
      *
-     * @param string $filePath The file path.
+     * @param string $path The file path.
+     * @param string $filename The file name.
      */
-    function attach(string $filePath);
+    function attach(string $path, ?string $filename = null);
 
     /**
      * Embed the given file into this message.
      *
-     * @param string $filePath The file path.
+     * @param string $path The file path.
+     * @param string $filename The file name.
      *
      * @return string The attachment ID.
      */
-    function embed(string $filePath): string;
+    function embed(string $filePath, ?string $filename = null): string;
 
     /**
      * Get this message attachments.
      *
-     * @return string[] This message attachments.
+     * @return Attachment[] This message attachments.
      */
     function attachments(): array;
 
     /**
      * Get this message embedded attachments.
      *
-     * @return string[] This message embedded attachments.
+     * @return Attachment[] This message embedded attachments.
      */
     function embeddedAttachments(): array;
 }

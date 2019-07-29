@@ -44,24 +44,26 @@ abstract class StandardMessageContent implements MessageContent
     /**
      * Attach the given file to this message.
      *
-     * @param string $filePath The file path.
+     * @param string $path The file path.
+     * @param string|null $filename The file name.
      */
-    public function attach(string $filePath)
+    public function attach(string $path, ?string $filename = null)
     {
-        $this->attachments[$this->getAttachmentId($filePath)] = $filePath;
+        $this->attachments[$this->getAttachmentId($path)] = new Attachment($path, $filename);
     }
 
     /**
      * Embed the given file into this message.
      *
-     * @param string $filePath The file path.
+     * @param string $path The file path.
+     * @param string|null $filename The file name.
      *
      * @return string The attachment ID.
      */
-    public function embed(string $filePath): string
+    public function embed(string $path, ?string $filename = null): string
     {
-        $id = $this->getAttachmentId($filePath);
-        $this->embeddedAttachments[$id] = $filePath;
+        $id = $this->getAttachmentId($path);
+        $this->embeddedAttachments[$id] = new Attachment($path, $filename);
 
         return $id;
     }
@@ -69,7 +71,7 @@ abstract class StandardMessageContent implements MessageContent
     /**
      * Get this message attachments.
      *
-     * @return string[] This message attachments.
+     * @return Attachment[] This message attachments.
      */
     public function attachments(): array
     {
@@ -79,7 +81,7 @@ abstract class StandardMessageContent implements MessageContent
     /**
      * Get this message embedded attachments.
      *
-     * @return string[] This message embedded attachments.
+     * @return Attachment[] This message embedded attachments.
      */
     public function embeddedAttachments(): array
     {
@@ -89,12 +91,12 @@ abstract class StandardMessageContent implements MessageContent
     /**
      * Get ID of the given attachment.
      *
-     * @param string $filePath The file path.
+     * @param string $path The file path.
      *
      * @return string The attachment ID.
      */
-    private function getAttachmentId(string $filePath): string
+    private function getAttachmentId(string $path): string
     {
-        return sprintf('easy-mailer:attachment:%s', sha1($filePath));
+        return sprintf('easy-mailer:attachment:%s', sha1($path));
     }
 }
