@@ -63,6 +63,7 @@ class SwiftMailerAdapter implements MailerAdapter
         $swiftMessage->setBcc(array_merge($this->adaptAddresses($message->bcc()), $this->adaptAddresses($bcc)));
         $swiftMessage->setSender($this->adaptAddresses([$message->sender()]));
         $swiftMessage->setFrom($this->adaptAddresses($message->from()));
+        $swiftMessage->setReplyTo($this->adaptAddresses($message->replyTo()));
 
         return $swiftMessage;
     }

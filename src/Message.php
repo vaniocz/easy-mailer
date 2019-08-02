@@ -63,6 +63,13 @@ class Message
     private $from;
 
     /**
+     * Reply-To of this message.
+     *
+     * @var EmailAddress[]
+     */
+    private $replyTo;
+
+    /**
      * Set this message data.
      *
      * @param string $title This message title.
@@ -73,6 +80,7 @@ class Message
      * @param EmailAddress[] $bcc Recipients who this message will be blind-copied to.
      * @param EmailAddress $sender The sender of this message.
      * @param EmailAddress[] $from Writers of this message.
+     * @param EmailAddress[] $replyTo Reply-To of this message.
      */
     public function __construct(
         string $title,
@@ -82,7 +90,8 @@ class Message
         array $cc,
         array $bcc,
         EmailAddress $sender,
-        array $from = []
+        array $from = [],
+        array $replyTo = []
     ) {
         $this->title = $title;
         $this->subject = $subject;
@@ -92,6 +101,7 @@ class Message
         $this->bcc = $bcc;
         $this->sender = $sender;
         $this->from = $from;
+        $this->replyTo = $replyTo;
     }
 
     /**
@@ -172,5 +182,15 @@ class Message
     public function from(): array
     {
         return $this->from;
+    }
+
+    /**
+     * Get Reply-To of this message.
+     *
+     * @return EmailAddress[] Reply-To of this message.
+     */
+    public function replyTo(): array
+    {
+        return $this->replyTo;
     }
 }

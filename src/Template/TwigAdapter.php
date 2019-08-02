@@ -53,7 +53,8 @@ class TwigAdapter implements TemplateEngineAdapter
             EmailAddresses::fromString(trim($this->renderBlock($template, 'cc', $context))),
             EmailAddresses::fromString(trim($this->renderBlock($template, 'bcc', $context))),
             EmailAddress::fromString(trim($this->renderBlock($template, 'sender', $context))),
-            EmailAddresses::fromString(trim($this->renderBlock($template, 'from', $context)))
+            EmailAddresses::fromString(trim($this->renderBlock($template, 'from', $context))),
+            EmailAddresses::fromString(trim($this->renderBlock($template, 'reply_to', $context)))
         );
     }
 
