@@ -2,6 +2,7 @@
 namespace Vanio\EasyMailer\Mailer;
 
 use Swift_Attachment;
+use Swift_EmbeddedFile;
 use Swift_Mailer;
 use Swift_Message;
 use Vanio\EasyMailer\EmailAddress;
@@ -106,7 +107,7 @@ class SwiftMailerAdapter implements MailerAdapter
         }
         $cids = [];
         foreach ($from->content()->embeddedAttachments() as $id => $attachment) {
-            $swiftAttachment = Swift_Attachment::fromPath($attachment->path())
+            $swiftAttachment = Swift_EmbeddedFile::fromPath($attachment->path())
                 ->setFilename($attachment->filename());
             $cids[$id] = $to->embed($swiftAttachment);
         }
