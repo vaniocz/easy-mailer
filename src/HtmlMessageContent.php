@@ -90,8 +90,6 @@ class HtmlMessageContent extends StandardMessageContent
     {
         if ($this->shouldEmogrify) {
             $emogrifier = new Emogrifier($this->html);
-            $emogrifier->disableInvisibleNodeRemoval();
-
             return $emogrifier->emogrify();
         }
 
