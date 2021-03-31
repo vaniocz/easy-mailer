@@ -20,6 +20,11 @@ class EasyMailer
     private $mailerAdapter;
 
     /**
+     * @var int[]
+     */
+    private $sendRetry;
+
+    /**
      * @var bool
      */
     private $isDeliveryEnabled = true;
@@ -29,11 +34,13 @@ class EasyMailer
      *
      * @param TemplateEngineAdapter $templateEngineAdapter Template engine adapter.
      * @param MailerAdapter $mailerAdapter Mail sender adapter.
+     * @param int[] $sendRetry Intervals in which to retry sending failed e-mail (in seconds).
      */
-    public function __construct(TemplateEngineAdapter $templateEngineAdapter, MailerAdapter $mailerAdapter)
+    public function __construct(TemplateEngineAdapter $templateEngineAdapter, MailerAdapter $mailerAdapter, array $sendRetry = [])
     {
         $this->templateEngineAdapter = $templateEngineAdapter;
         $this->mailerAdapter = $mailerAdapter;
+        $this->sendRetry = $sendRetry;
     }
 
     /**
@@ -52,12 +59,28 @@ class EasyMailer
         }
 
         $message = $this->templateEngineAdapter->createMessage($templatePath, $context);
-        $this->mailerAdapter->sendMessage(
-            $message,
-            array_map([EmailAddress::class, 'fromString'], $to),
-            array_map([EmailAddress::class, 'fromString'], $cc),
-            array_map([EmailAddress::class, 'fromString'], $bcc)
-        );
+        $isSent = false;
+        $attempts = 0;
+
+        while (!$isSent) {
+            try {
+                $this->mailerAdapter->sendMessage(
+                    $message,
+                    array_map([EmailAddress::class, 'fromString'], $to),
+                    array_map([EmailAddress::class, 'fromString'], $cc),
+                    array_map([EmailAddress::class, 'fromString'], $bcc)
+                );
+
+                $isSent = true;
+            } catch (\Throwable $exception) {
+                if (count($this->sendRetry) > $attempts) {
+                    sleep($this->sendRetry[$attempts]);
+                    ++$attempts;
+                } else {
+                    throw $exception;
+                }
+            }
+        }
     }
 
     /**
