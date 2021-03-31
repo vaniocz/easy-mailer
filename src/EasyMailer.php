@@ -73,7 +73,7 @@ class EasyMailer
 
                 $isSent = true;
             } catch (\Throwable $exception) {
-                if (count($this->sendRetry) > $attempts) {
+                if (isset($this->sendRetry[$attempts])) {
                     sleep($this->sendRetry[$attempts]);
                     ++$attempts;
                 } else {
