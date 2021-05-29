@@ -8,11 +8,11 @@
         {"name": "Adam Hojka"}
     ],
     "require": {
-        "php": "^7.0",
+        "php": ">=7.0",
         "pelago/emogrifier": "^1.2 || ^2.0 || ^3.0",
         "html2text/html2text": "^4.0",
         "swiftmailer/swiftmailer": "^5.4 || ^6.0",
-        "twig/twig": "^1.24 || ^2.0"
+        "twig/twig": "^1.24 || ^2.0 || ^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.5",
