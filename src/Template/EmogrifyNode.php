@@ -1,17 +1,17 @@
 <?php
 namespace Vanio\EasyMailer\Template;
 
-use Twig_Compiler;
-use Twig_Node;
+use Twig\Compiler;
+use Twig\Node\Node;
 
-class EmogrifyNode extends Twig_Node
+class EmogrifyNode extends Node
 {
     public function __construct(int $lineno = 0, string $tag = null)
     {
         parent::__construct([], [], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler->write('
             if (!$context["_content"] instanceof \Vanio\EasyMailer\HtmlMessageContent) {

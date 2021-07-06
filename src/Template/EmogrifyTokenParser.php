@@ -1,14 +1,15 @@
 <?php
 namespace Vanio\EasyMailer\Template;
 
-use Twig_Token;
-use Twig_TokenParser;
+use Twig\Node\Node;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
 
-class EmogrifyTokenParser extends Twig_TokenParser
+class EmogrifyTokenParser extends AbstractTokenParser
 {
-    public function parse(Twig_Token $token): \Twig_Node
+    public function parse(Token $token): Node
     {
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
         return new EmogrifyNode($token->getLine(), $this->getTag());
     }

@@ -1,36 +1,36 @@
 <?php
 namespace Vanio\EasyMailer\Template;
 
-use Twig_Extension;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
-use Twig_TokenParser;
+use Twig\Extension\AbstractExtension;
+use Twig\TokenParser\AbstractTokenParser;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Vanio\EasyMailer\MessageContent;
 
-class TwigExtension extends Twig_Extension
+class TwigExtension extends AbstractExtension
 {
     /**
-     * @return Twig_SimpleFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new Twig_SimpleFunction('attach', [$this, 'attach'], ['needs_context' => true]),
+            new TwigFunction('attach', [$this, 'attach'], ['needs_context' => true]),
         ];
     }
 
     /**
-     * @return Twig_SimpleFilter[]
+     * @return TwigFilter[]
      */
     public function getFilters(): array
     {
         return [
-            new Twig_SimpleFilter('embed', [$this, 'embed'], ['needs_context' => true]),
+            new TwigFilter('embed', [$this, 'embed'], ['needs_context' => true]),
         ];
     }
 
     /**
-     * @return Twig_TokenParser[]
+     * @return AbstractTokenParser[]
      */
     public function getTokenParsers(): array
     {
