@@ -43,7 +43,7 @@ class TwigAdapter implements TemplateEngineAdapter
      */
     public function createMessage(string $templatePath, array $context): Message
     {
-        $template = $this->twig->loadTemplate($templatePath);
+        $template = $this->twig->loadTemplate($this->twig->getTemplateClass($templatePath), $templatePath);
         $context = $this->twig->mergeGlobals($context);
 
         return new Message(
