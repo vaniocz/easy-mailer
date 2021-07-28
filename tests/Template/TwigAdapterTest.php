@@ -2,15 +2,16 @@
 namespace Vanio\EasyMailer\Tests\Template;
 
 use PHPUnit\Framework\TestCase;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
+use Twig\Environment;
+use Twig\Error\RuntimeError;
+use Twig\Loader\FilesystemLoader;
 use Vanio\EasyMailer\EmailAddress;
 use Vanio\EasyMailer\Message;
 use Vanio\EasyMailer\Template\TwigAdapter;
 
 class TwigAdapterTest extends TestCase
 {
-    /** @var Twig_Environment */
+    /** @var Environment */
     private $twig;
 
     /** @var Message */
@@ -18,7 +19,7 @@ class TwigAdapterTest extends TestCase
 
     protected function setUp()
     {
-        $this->twig = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . '/../Fixtures/templates/twig'));
+        $this->twig = new Environment(new FilesystemLoader(__DIR__ . '/../Fixtures/templates/twig'));
         $this->message = (new TwigAdapter($this->twig))->createMessage('testMessage.html.twig', ['lang' => 'en']);
     }
 
@@ -125,7 +126,7 @@ class TwigAdapterTest extends TestCase
 
     function test_twig_runtime_exceptions_are_not_swallowed()
     {
-        $this->expectException(\Twig_Error_Runtime::class);
+        $this->expectException(RuntimeError::class);
         (new TwigAdapter($this->twig))->createMessage('invalidMessage.twig', []);
     }
 }

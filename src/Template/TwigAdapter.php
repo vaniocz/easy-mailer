@@ -1,8 +1,9 @@
 <?php
 namespace Vanio\EasyMailer\Template;
 
-use Twig_Environment;
-use Twig_Template;
+use Twig\Environment;
+use Twig\Error\RuntimeError;
+use Twig\Template;
 use Vanio\EasyMailer\EmailAddress;
 use Vanio\EasyMailer\EmailAddresses;
 use Vanio\EasyMailer\GenericMessageContent;
@@ -16,14 +17,14 @@ use Vanio\EasyMailer\MessageContent;
 class TwigAdapter implements TemplateEngineAdapter
 {
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
     /**
-     * @param Twig_Environment $twig
+     * @param Environment $twig
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
 
@@ -61,12 +62,12 @@ class TwigAdapter implements TemplateEngineAdapter
     /**
      * Create a message content from the given template and context.
      *
-     * @param Twig_Template $template
+     * @param Template $template
      * @param mixed[] $context
      *
      * @return MessageContent
      */
-    protected function createMessageContent(Twig_Template $template, array $context): MessageContent
+    protected function createMessageContent(Template $template, array $context): MessageContent
     {
         $mimeType = $this->renderBlock($template, 'content_type', $context);
         $content = $mimeType === 'text/html'
@@ -82,7 +83,7 @@ class TwigAdapter implements TemplateEngineAdapter
         return $content;
     }
 
-    private function renderBlock(Twig_Template $template, string $block, array $context): string
+    private function renderBlock(Template $template, string $block, array $context): string
     {
         if (!$template->hasBlock($block, $context)) {
             return '';
@@ -92,7 +93,7 @@ class TwigAdapter implements TemplateEngineAdapter
 
         try {
             return $template->renderBlock($block, $context);
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (RuntimeError $e) {
             while (ob_get_level() > $obLevel) {
                 ob_end_clean();
             }
